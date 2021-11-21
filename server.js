@@ -1,22 +1,22 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var bijective = require('./bijective.js');
-var Urls = require('./models');
+let express = require('express');
+let mongoose = require('mongoose');
+let bijective = require('./bijective.js');
+let Urls = require('./models');
 mongoose.connect('mongodb://localhost/url-shortener');
 
-var app = express();
+let app = express();
 
 app.use(express.static('public'));
 
 app.get('/url/:longUrl', function(req, res){
 
-    var shortUrl = '';
+    let shortUrl = '';
 
     Urls.findOne({url: req.params.longUrl}, function (err, doc){
         if (doc){
             res.send({'key': bijective.encode(doc._id)});
         } else {
-            var newUrl = Urls({
+            let newUrl = Urls({
                 url: req.params.longUrl
             });
 
@@ -31,7 +31,7 @@ app.get('/url/:longUrl', function(req, res){
 
 app.get('/:key', function(req, res){
 
-    var id = bijective.decode(req.params.key);
+    let id = bijective.decode(req.params.key);
 
     Urls.findOne({_id: id}, function (err, doc){
         if (doc) {
