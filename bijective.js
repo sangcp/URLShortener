@@ -1,22 +1,26 @@
-let alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; let base = alphabet.length;
+const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const base = alphabet.length;
 
-function encode(num){
+function encode(inputnum){
     let encoded = '';
-    if(num==0) return alphabet[num];
+    let num = inputnum;
+    if(num === 0)
+        return alphabet[num];
     while (num){
-        let remainder = num % base;
+        const remainder = num % base;
         num = Math.floor(num / base);
         encoded = alphabet[remainder].toString() + encoded;
     }
   return encoded;
 }
 
-function decode(str){
+function decode(inputstr){
     let decoded = 0;
+    let str = inputstr;
     while (str){
-        let index = alphabet.indexOf(str[0]);
-        let power = str.length - 1;
-        decoded += index * (Math.pow(base, power));
+        const index = alphabet.indexOf(str[0]);
+        const power = str.length - 1;
+        decoded += index * (base**power);
         str = str.substring(1);
     }
     return decoded;

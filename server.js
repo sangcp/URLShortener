@@ -1,39 +1,36 @@
-let express = require('express');
-let mongoose = require('mongoose');
-let bijective = require('./bijective.js');
-let Urls = require('./models');
-mongoose.connect('mongodb://localhost/url-shortener');
+const express = require('express');
+const mongoose = require('mongoose');
+const bijective = require('./bijective');
+const Urls = require('./models');
 
-let app = express();
+const URL = 'mongodb://localhost/url-shortener';
+mongoose.connect(URL);
+
+const app = express();
 
 app.use(express.static('public'));
 
-app.get('/url/:longUrl', function(req, res){
-
-    let shortUrl = '';
-
-    Urls.findOne({url: req.params.longUrl}, function (err, doc){
+app.get('/url/:longUrl', (req, res)=> {
+    Urls.findOne({url: req.params.longUrl}, (err, doc) => {
         if (doc){
             res.send({'key': bijective.encode(doc._id)});
         } else {
-            let newUrl = Urls({
+            const newUrl = Urls({
                 url: req.params.longUrl
             });
-
-            newUrl.save(function(err) {
+            newUrl.save((err) => {
                 if (err) console.log(err);
-
                 res.send({'key': bijective.encode(newUrl._id)});
             });
         } 
     });
 });
 
-app.get('/:key', function(req, res){
+app.get('/:key', (req, res)=> {
 
-    let id = bijective.decode(req.params.key);
+    const id = bijective.decode(req.params.key);
 
-    Urls.findOne({_id: id}, function (err, doc){
+    Urls.findOne({_id: id}, (err, doc)=> {
         if (doc) {
             res.redirect(doc.url);
         } else {
@@ -42,6 +39,6 @@ app.get('/:key', function(req, res){
     }); 
 });
 
-app.listen(3000, function () {
+app.listen(3000, () => {
     console.log('URL Shortener Server listening on port 3000!')
 });

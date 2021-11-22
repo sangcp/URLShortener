@@ -1,36 +1,38 @@
-let mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-let Schema = mongoose.Schema;
+const {Schema} = mongoose;
 
-let SequencesSchema = Schema({
+const SequencesSchema = Schema({
     _id: { type: String, required: true },
     seq: { type: Number, default: 0 }
 });
 
-let sequences = mongoose.model("sequences", SequencesSchema);
+const sequences = mongoose.model("sequences", SequencesSchema);
 
-let UrlsSchema = new Schema({
+const UrlsSchema = new Schema({
     _id: { type: Number },
     url: String,
     created_at: Date
 });
 
 UrlsSchema.pre("save", function(next) {
-    let self = this;
+    const self = this;
+    console.log(self.url);
     sequences.findOneAndUpdate(
         { _id: "url_count" },
         { $inc: { seq: 1 } },
         { upsert: true },
-        function(error, result) {
+        (error, result) => {
             console.log(result);
             if (error) return next(error);
             self.created_at = new Date();
             self._id = result.seq;
-            next();
+            console.log(self);
+            return next();
         }
     );
 });
 
-let urls = mongoose.model("urls", UrlsSchema);
+const urls = mongoose.model("urls", UrlsSchema);
 
 module.exports = urls;

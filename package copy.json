@@ -1,0 +1,33 @@
+{
+  "name": "url-shortener",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/42JalS/url-shortener.git"
+  },
+  "author": "42JalS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/42JalS/url-shortener/issues"
+  },
+  "homepage": "https://github.com/42JalS/url-shortener#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.13",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "nodemon": "^2.0.15",
+    "prettier": "2.4.1"
+  }
+}
