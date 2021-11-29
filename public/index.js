@@ -4,12 +4,15 @@ const $basicUrl = document.querySelector('#basicUrl');
 const $submitBasicUrl = document.querySelector('#submitBasicUrl');
 $submitBasicUrl.addEventListener('click', async e => {
   e.preventDefault();
-  const basicUrl = encodeURIComponent($basicUrl.value);
-  const response = await fetch(`${APT_SERVER}/url/${basicUrl}`, {
-    method: 'GET',
+  const basicUrl = $basicUrl.value;
+  const response = await fetch(`${APT_SERVER}/url`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      basicUrl
+    })
   });
   if (response.status === 200) {
     const data = await response.json();
@@ -25,12 +28,15 @@ const $emojiUrl = document.querySelector('#emojiUrl');
 const $submitEmojiUrl = document.querySelector('#submitEmojiUrl');
 $submitEmojiUrl.addEventListener('click', async e => {
   e.preventDefault();
-  const emojiUrl = encodeURIComponent($emojiUrl.value);
-  const response = await fetch(`${APT_SERVER}/emoji-url/${emojiUrl}`, {
-    method: 'GET',
+  const emojiUrl = $emojiUrl.value;
+  const response = await fetch(`${APT_SERVER}/emoji-url`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      emojiUrl
+    })
   });
   if (response.status === 200) {
     const data = await response.json();
@@ -43,15 +49,22 @@ $submitEmojiUrl.addEventListener('click', async e => {
 });
 
 const $customUrl = document.querySelector('#customUrl');
+const $customWord = document.querySelector('#customWord');
 const $submitCustomUrl = document.querySelector('#submitCustomUrl');
 $submitCustomUrl.addEventListener('click', async e => {
   e.preventDefault();
-  const customUrl = encodeURIComponent($customUrl.value);
-  const response = await fetch(`${APT_SERVER}/custom-url/${customUrl}`, {
-    method: 'GET',
+  const customUrl = $customUrl.value;
+  // TODO: validate customWord
+  const customWord = $customWord.value;
+  const response = await fetch(`${APT_SERVER}/custom-url`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      customUrl,
+      customWord
+    })
   });
   if (response.status === 200) {
     const data = await response.json();
@@ -67,12 +80,15 @@ const $titleUrl = document.querySelector('#titleUrl');
 const $submitTitleUrl = document.querySelector('#submitTitleUrl');
 $submitTitleUrl.addEventListener('click', async e => {
   e.preventDefault();
-  const titleUrl = encodeURIComponent($titleUrl.value);
-  const response = await fetch(`${APT_SERVER}/title-url/${titleUrl}`, {
-    method: 'GET',
+  const titleUrl = $titleUrl.value;
+  const response = await fetch(`${APT_SERVER}/title-url`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({
+      titleUrl
+    })
   });
   if (response.status === 200) {
     const data = await response.json();

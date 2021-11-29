@@ -1,28 +1,32 @@
 const mongoose = require('mongoose');
+const Sequences = require('./sequences');
 
 const { Schema } = mongoose;
 
-const SequenceSchema = new Schema({
-  _id: { type: String, required: true },
-  seq: { type: Number, default: 0 },
-});
-
-const sequence = mongoose.model('sequence', SequenceSchema);
-
-const UrlsSchema = new Schema({
-  _id: { type: Number },
-  url: String,
-  created_at: Date,
-});
+const UrlsSchema = new Schema(
+  {
+    originalUrl: {
+      type: String,
+      required: true,
+    },
+    convertedUrl: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    _opengraphId: {
+      type: Schema.Types.ObjectId,
+      ref: 'opengraph',
+    },
+  },
+  { timestamps: true }
+);
 
 // eslint-disable-next-line func-names
 const preSaveUrlsSchema = function (next) {
-  const doc = this;
-  sequence.findOneAndUpdate({ _id: 'url_count' }, { $inc: { seq: 1 } }, { upsert: true }, (error, counter) => {
-    console.log('counter', counter);
+  // NOTE: DO NOT CHANGE THIS FUNCTION TO AN ARROW FUNCTION!
+  Sequences.findOneAndUpdate({ _id: 'url_count' }, { $inc: { seq: 1 } }, { upsert: true, new: true }, (error) => {
     if (error) return next(error);
-    doc._id = counter.seq;
-    doc.created_at = new Date();
     next();
   });
 };
